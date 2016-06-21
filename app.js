@@ -4,8 +4,9 @@ var app = express();
 var morgan = require('morgan');
 var swig = require('swig');
 var models = require('./models');
-var wikiRouter = require('./routes/wiki');
 
+app.use(bodyparser.urlencoded({ extended: true }));
+app.use(bodyparser.json());
 // point res.render to the proper directory
 app.set('views', __dirname + '/views');
 // have res.render work with html files
@@ -18,11 +19,11 @@ swig.setDefaults({cache: false});
 
 app.use(express.static('public'));
 
-app.use('/wiki', wikiRouter);
+app.use('/', require('./routes'));
 
-models.User.sync({})
+models.User.sync({ force: true })
 .then(function () {
-    return models.Page.sync({})
+    return models.Page.sync({ force: true })
 })
 .then(function () {
     app.listen(3001, function () {

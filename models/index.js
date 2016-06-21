@@ -28,26 +28,20 @@ var Page = db.define('page', {
   }, {
     getterMethods: {
       route: function () { return '/wiki/' + this.urlTitle }
-    }
+    },
+    hooks: {
+      beforeValidate: function generateUrlTitle (page) {
+        if (page.title) {
+          // Removes all non-alphanumeric characters from title
+          // And make whitespace underscore
+          page.urlTitle = page.title.replace(/\s+/g, '_').replace(/\W/g, '');
+        } else {
+          // Generates random 5 letter string
+          page.urlTitle = Math.random().toString(36).substring(2, 7);
+        }
+      }
+  },
 });
-
-// var Foo = sequelize.define('foo', {
-//   firstname: Sequelize.STRING,
-//   lastname: Sequelize.STRING
-// }, {
-//   getterMethods   : {
-//     fullName       : function()  { return this.firstname + ' ' + this.lastname }
-//   },
-
-//   setterMethods   : {
-//     fullName       : function(value) {
-//         var names = value.split(' ');
-
-//         this.setDataValue('firstname', names.slice(0, -1).join(' '));
-//         this.setDataValue('lastname', names.slice(-1).join(' '));
-//     },
-//   }
-// });
 
 var User = db.define('user', {
     name: {
@@ -60,6 +54,8 @@ var User = db.define('user', {
         isEmail: true
     }
 });
+
+Page.belongsTo(User, { as: 'author'});
 
 module.exports = {
   Page: Page,
