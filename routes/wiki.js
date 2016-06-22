@@ -43,9 +43,20 @@ router.get('/add', function(req, res, next) {
 });
 
 router.get('/search', function(req, res, next) {
-  Page.findAll({}).then(function(tags) {
-    res.render('tagsearch', { page.tags: tags });
-  }).catch(next);
+  Page.findAll({}).then(function(pages) {
+
+    var tags = pages.reduce(function (allTags, page) {
+      page.tags.forEach(function (tag) {
+        if (allTags.indexOf(tag) === -1) {
+          allTags.push(tag);
+        }
+      });
+      return allTags;
+    }, []);
+    // tags is an array of all the tags
+
+    res.render('tagsearch', { tags: tags });
+    }).catch(next);
 });
 
 router.get('/:urlTitle', function (req, res, next) {

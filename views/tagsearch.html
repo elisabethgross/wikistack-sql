@@ -1,11 +1,14 @@
 {% extends "layout.html" %}
 
+<!-- list of tags  -->
 {% block content %}
   <h3>Tags</h3>
   <hr>
   <ul class="list-unstyled">
-    {% for tag in page.tags %}
+    {% for tag in tags %}
       <li>{{ tag }}</li>
     {% endfor %}
   </ul>
 {% endblock %}
+
+<!-- search for a tag -->
