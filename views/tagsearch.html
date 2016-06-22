@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h3>Tags</h3>
+  <hr>
+  <ul class="list-unstyled">
+    {% for tag in page.tags %}
+      <li>{{ tag }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

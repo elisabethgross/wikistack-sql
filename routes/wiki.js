@@ -20,10 +20,12 @@ router.post('/', function(req, res, next) {
   })
   .then(function (values) {
     var user = values[0];
-
+    var tagsThing = req.body.tags.split(' ');
+    console.log(Array.isArray(tagsThing))
     var page = Page.build({
       title: req.body.title,
-      content: req.body.content
+      content: req.body.content,
+      tags: tagsThing
     });
 
     return page.save().then(function (page) {
@@ -38,6 +40,12 @@ router.post('/', function(req, res, next) {
 
 router.get('/add', function(req, res, next) {
   res.render('addpage');
+});
+
+router.get('/search', function(req, res, next) {
+  Page.findAll({}).then(function(tags) {
+    res.render('tagsearch', { page.tags: tags });
+  }).catch(next);
 });
 
 router.get('/:urlTitle', function (req, res, next) {

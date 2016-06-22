@@ -21,9 +21,9 @@ app.use(express.static('public'));
 
 app.use('/', require('./routes'));
 
-models.User.sync({ force: true })
+models.User.sync({})
 .then(function () {
-    return models.Page.sync({ force: true })
+    return models.Page.sync({})
 })
 .then(function () {
     app.listen(3001, function () {
