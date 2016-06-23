@@ -30,7 +30,9 @@ var Page = db.define('page', {
     }
   }, {
     getterMethods: {
-      route: function () { return '/wiki/' + this.urlTitle }
+      route: function () {
+        return '/wiki/' + this.urlTitle;
+      }
     },
     hooks: {
       beforeValidate: function generateUrlTitle (page) {
